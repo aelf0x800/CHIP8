@@ -1,0 +1,8 @@
+/home/a/Desktop/CHIP8/build/CMakeFiles/CHIP8.dir
+/home/a/Desktop/CHIP8/build/CMakeFiles/edit_cache.dir
+/home/a/Desktop/CHIP8/build/CMakeFiles/rebuild_cache.dir
+/home/a/Desktop/CHIP8/build/_deps/sdl3-build/CMakeFiles/SDL3-shared.dir
+/home/a/Desktop/CHIP8/build/_deps/sdl3-build/CMakeFiles/SDL3_test.dir
+/home/a/Desktop/CHIP8/build/_deps/sdl3-build/CMakeFiles/SDL_uclibc.dir
+/home/a/Desktop/CHIP8/build/_deps/sdl3-build/CMakeFiles/edit_cache.dir
+/home/a/Desktop/CHIP8/build/_deps/sdl3-build/CMakeFiles/rebuild_cache.dir

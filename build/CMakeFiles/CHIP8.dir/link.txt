@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/CHIP8.dir/link.d CMakeFiles/CHIP8.dir/CHIP8/Main.cpp.o CMakeFiles/CHIP8.dir/CHIP8/Decode.cpp.o CMakeFiles/CHIP8.dir/CHIP8/Platform.cpp.o CMakeFiles/CHIP8.dir/CHIP8/Interpreter.cpp.o -o CHIP8  -Wl,-rpath,/home/a/Desktop/CHIP8/build/_deps/sdl3-build _deps/sdl3-build/libSDL3.so.0.2.8
