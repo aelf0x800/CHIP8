@@ -7,7 +7,6 @@ enum struct Op
     None,
     Cls00E0,
     Ret00EE,
-    Dw0nnn,
     Jp1nnn,
     Call2nnn,
     Se3xnn,

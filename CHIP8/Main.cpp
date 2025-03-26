@@ -3,12 +3,23 @@
 
 int main(int argc, const char **argv) 
 {
-    if (argc != 2)
+    // Ensure enough arguments were provided
+    if (argc != 3)
     {
-        std::println("usage: {} [ROM]", argv[0]);
+        std::println("usage: {} [rom] [cycles per second/max/min]", argv[0]);
         return 1;
     }
 
-    Interpreter i(argv[1]);
-    i.Run();
+    // Parse the cycles per second argument
+    int cyclesPerSec{};
+    if (strncmp(argv[2], "max", 3) == 0)
+        cyclesPerSec = Interpreter::MaxCycles;
+    else if (strncmp(argv[2], "min", 3) == 0)
+        cyclesPerSec = Interpreter::MinCycles;
+    else
+        cyclesPerSec = std::stoi(argv[2]);
+
+    // Run the interpreter
+    Interpreter interpreter(cyclesPerSec, argv[1]);
+    interpreter.Run();
 }

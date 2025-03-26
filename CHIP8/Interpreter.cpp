@@ -1,11 +1,15 @@
 #include "Decode.h"
 #include "Interpreter.h"
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <print>
 
-Interpreter::Interpreter(const std::string_view& romPath)
+Interpreter::Interpreter(int cyclesPerSec, const std::string_view& romPath)
 {
+    // Set the cycles per second
+    m_cyclesPerSec = cyclesPerSec;
+
     // Load the font into memory
     m_memory = 
     {
@@ -38,15 +42,17 @@ void Interpreter::Run()
 {
     while (m_platform.GetIsOpen())
     {
-        Cycle();
-        TickTimers();
+        if (m_cyclesPerSec == MaxCycles || ShouldCycle())
+        {
+            Cycle();
+            TickTimers();
+        }
         m_platform.PollEvents(m_keypad);
     }
 }
 
 void Interpreter::Cycle()
 {
-    std::println("{:4x}", (m_memory[m_pc] << 8) | m_memory[m_pc + 1]); 
     // Fetch and decode the instruction
     Instruction ins((m_memory[m_pc++] << 8) | m_memory[m_pc++]);
     // Exectute the instruction
@@ -190,4 +196,25 @@ void Interpreter::SetPixel(int x, int y)
     // Set the pixel and flag
     m_v[0xF] = m_display[y * 64 + x];
     m_display[y * 64 + x] = m_display[y * 64 + x] ? false : true;
+}
+
+bool Interpreter::ShouldCycle()
+{
+    constexpr int ms = 1000;
+    static uint64_t prevCycle = GetTimeMs();
+    uint64_t delta = GetTimeMs() - prevCycle;
+    if (delta >= ms / m_cyclesPerSec)
+    {
+        prevCycle = GetTimeMs();
+        return true;
+    }
+    return false;
+}
+
+uint64_t Interpreter::GetTimeMs()
+{
+    auto now = std::chrono::system_clock::now();
+    auto epoch = now.time_since_epoch();
+    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(epoch).count();
+    return ms;
 }

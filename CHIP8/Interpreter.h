@@ -7,6 +7,10 @@
 
 class Interpreter
 {
+public:
+    static constexpr int MinCycles = 10;
+    static constexpr int MaxCycles = -1;
+
 private:
     Platform m_platform;
     
@@ -24,8 +28,10 @@ private:
     uint8_t m_delayTimer{};
     uint8_t m_soundTimer{};
 
+    int m_cyclesPerSec{};
+
 public:
-    Interpreter(const std::string_view& romPath);
+    Interpreter(int cyclesPerSec, const std::string_view& romPath);
    
     void Run();
 
@@ -33,4 +39,6 @@ private:
     void Cycle();
     void TickTimers();
     void SetPixel(int x, int y);
+    bool ShouldCycle();
+    uint64_t GetTimeMs();
 };

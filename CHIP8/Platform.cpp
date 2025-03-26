@@ -1,4 +1,6 @@
+#include "Interpreter.h"
 #include "Platform.h"
+#include <print>
 
 Platform::Platform()
 {
@@ -19,6 +21,7 @@ Platform::~Platform()
 
 void Platform::DrawDisplay(const std::bitset<s_width * s_height>& display)
 {
+    // Draw the monochrome display pixel by pixel
     for (int y{}; y < s_height; y++)
     {
         for (int x{}; x < s_width; x++)
@@ -35,6 +38,7 @@ void Platform::DrawDisplay(const std::bitset<s_width * s_height>& display)
 
 void Platform::PollEvents(std::bitset<16>& keypad)
 {
+    // Poll for events
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -43,20 +47,21 @@ void Platform::PollEvents(std::bitset<16>& keypad)
         case SDL_EVENT_QUIT:
             m_isOpen = false;
             break;
+        // Handle keypad keys
         case SDL_EVENT_KEY_DOWN:
-        {
-            auto index = KeyToKeypadIndex(event.key.key);
-            if (index.has_value())
-                keypad[index.value()] = true;
-        }
-        break;
+            {
+                auto index = KeyToKeypadIndex(event.key.key);
+                if (index.has_value())
+                    keypad[index.value()] = true;
+            }
+            break;
         case SDL_EVENT_KEY_UP:
-        {
-            auto index = KeyToKeypadIndex(event.key.key);
-            if (index.has_value())
-                keypad[index.value()] = true;
-        }
-        break;
+            {
+                auto index = KeyToKeypadIndex(event.key.key);
+                if (index.has_value())
+                    keypad[index.value()] = false;
+            }
+            break;
         default:
             break;
         }
