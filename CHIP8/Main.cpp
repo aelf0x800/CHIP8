@@ -17,7 +17,12 @@ int main(int argc, const char **argv)
     else if (strncmp(argv[2], "min", 3) == 0)
         cyclesPerSec = Interpreter::MinCycles;
     else
+    {
+        // There is a minimum of 10 cycles per second
         cyclesPerSec = std::stoi(argv[2]);
+        if (cyclesPerSec < Interpreter::MinCycles)
+            cyclesPerSec = Interpreter::MinCycles;
+    }
 
     // Run the interpreter
     Interpreter interpreter(cyclesPerSec, argv[1]);

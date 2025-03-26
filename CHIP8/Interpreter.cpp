@@ -56,6 +56,7 @@ void Interpreter::Cycle()
     // Fetch and decode the instruction
     Instruction ins((m_memory[m_pc++] << 8) | m_memory[m_pc++]);
     // Exectute the instruction
+    // Information on the instructions can be found online
     switch (ins.Opcode)
     {
     case Op::Cls00E0:
@@ -184,6 +185,7 @@ void Interpreter::Cycle()
 
 void Interpreter::TickTimers()
 {
+    // Decrement the timers as longs as it is not zero
     m_delayTimer -= m_delayTimer > 0;
     m_soundTimer -= m_soundTimer > 0;
 }
