@@ -1,5 +1,6 @@
 #include "Decode.h"
 #include "Interpreter.h"
+#include <algorithm>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -40,14 +41,16 @@ Interpreter::Interpreter(int cyclesPerSec, const std::string_view& romPath)
 
 void Interpreter::Run()
 {
-    while (m_platform.GetIsOpen())
+    while (m_platform.PollEvent())
     {
         if (m_cyclesPerSec == MaxCycles || ShouldCycle())
         {
+            m_platform.UpdateKeypad(m_keypad);
+            for (int i{}; i < 16; i++) std::print("{}", m_keypad[i] ? "1" : "0");
+            std::println("\n");
             Cycle();
             TickTimers();
         }
-        m_platform.PollEvents(m_keypad);
     }
 }
 

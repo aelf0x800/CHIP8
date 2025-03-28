@@ -13,19 +13,14 @@ private:
 
     SDL_Window *m_window{};
     SDL_Renderer *m_renderer{};
-
-    bool m_isModified{ true };
-    bool m_isOpen{ true };
-    SDL_Keycode m_lastKey{};
-
+    
 public:
     Platform();
     ~Platform();
 
     void DrawDisplay(const std::bitset<s_width * s_height>& display);
-    void PollEvents(std::bitset<16>& keypad);
-
-    bool GetIsOpen();
+    bool PollEvent();
+    void UpdateKeypad(std::bitset<16>& keypad);
 
 private:
     std::optional<int> KeyToKeypadIndex(SDL_Keycode key);

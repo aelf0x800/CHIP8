@@ -36,41 +36,30 @@ void Platform::DrawDisplay(const std::bitset<s_width * s_height>& display)
     SDL_RenderPresent(m_renderer);
 }
 
-void Platform::PollEvents(std::bitset<16>& keypad)
+bool Platform::PollEvent()
 {
-    // Poll for events
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-        switch (event.type)
-        {
-        case SDL_EVENT_QUIT:
-            m_isOpen = false;
-            break;
-        // Handle keypad keys
-        case SDL_EVENT_KEY_DOWN:
-            {
-                auto index = KeyToKeypadIndex(event.key.key);
-                if (index.has_value())
-                    keypad[index.value()] = true;
-            }
-            break;
-        case SDL_EVENT_KEY_UP:
-            {
-                auto index = KeyToKeypadIndex(event.key.key);
-                if (index.has_value())
-                    keypad[index.value()] = false;
-            }
-            break;
-        default:
-            break;
-        }
-    }
+    // Poll for an event then return if the window is still open
+    while (SDL_PollEvent(&m_event))
+        if (m_event.type == SDL_EVENT_QUIT)
+            return false;
+
+    return true;
 }
 
-bool Platform::GetIsOpen()
+void Platform::UpdateKeypad(std::bitset<16>& keypad)
 {
-    return m_isOpen;
+    if (m_event.type == SDL_EVENT_KEY_DOWN)
+    {
+        auto index = KeyToKeypadIndex(m_event.key.key);
+        if (index.has_value())
+            keypad[index.value()] = true;
+    }
+    else if (m_event.type == SDL_EVENT_KEY_UP)
+    {
+        auto index = KeyToKeypadIndex(m_event.key.key);
+        if (index.has_value())
+            keypad[index.value()] = false;
+    }
 }
 
 std::optional<int> Platform::KeyToKeypadIndex(SDL_Keycode key)
