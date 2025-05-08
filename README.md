@@ -1,2 +1,2 @@
 # CHIP8
-CHIP-8 interpreter in C++
+CHIP-8 interpreter in various programming languages
