@@ -8,5 +8,6 @@ fn main() {
 		exit(1)
 	}
 
-	mut interpreter := Interpreter.init()
+	mut interpreter := Interpreter.new(os.args[1])
+	interpreter.run()
 }
